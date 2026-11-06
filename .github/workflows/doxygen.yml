@@ -45,5 +45,5 @@ jobs:
         with:
           personal_token: ${{ secrets.DOCS_DEPLOY_TOKEN }}
           external_repository: junya005/yamaneko-engine-docs
-          publish_branch: 
+          publish_branch: main
           publish_dir: ./docs/html
