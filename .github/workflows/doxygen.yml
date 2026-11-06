@@ -40,6 +40,10 @@ jobs:
         with:
           path: 'docs/html'
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Push generated docs to docs repository
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.DOCS_DEPLOY_TOKEN }}
+          external_repository: junya005/yamaneko-engine-docs
+          publish_branch: 
+          publish_dir: ./docs/html
