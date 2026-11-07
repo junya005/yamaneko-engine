@@ -12,8 +12,6 @@
 #include "../engine/platform/sdl/Time.h"
 #include "../engine/rhi/RHI.h"
 #include "../engine/scene/module/Camera.h"
-#include "Player.h"
-#include "Debri.h"
 
 using namespace yamaneko_engine;
 
@@ -49,5 +47,5 @@ public:
 	}
 
 private:
-
+	RHIShader* shader_;
 };
