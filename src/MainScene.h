@@ -24,6 +24,10 @@ public:
 			"assets/shader/simple_fragment_shader.glsl"
 		);
 
+		auto camera = std::make_unique<GameObject>("Camera", "", shader_);
+		camera->AddModule<Camera>();
+		camera->transform.position = Vector3(0.0f, 0.0f, -10.0f);
+		AddGameObject(std::move(camera));
 	}
 	
 	void OnEnter() override {
