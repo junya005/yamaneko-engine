@@ -17,6 +17,7 @@
 #include "../rhi/RHI.h"
 #include "../rhi/RHIDeviceDesc.h"
 #include "../rhi/backend/opengl/GLDevice.h"
+#include "../core/debug/Log.h"
 
 namespace yamaneko_engine {
 	bool Application::Initialize() {
@@ -54,6 +55,7 @@ namespace yamaneko_engine {
 			return false;
 		}
 
+		Log::Initialize();
 		Time::Initialize();
 		Input::Initialize();
 
