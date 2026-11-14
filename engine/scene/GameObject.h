@@ -75,6 +75,12 @@ namespace yamaneko_engine {
 			if (model != NULL) {
 				model->Draw(*shader);
 			}
+
+			for(auto& module : modules_) {
+				if (module) {
+					module->Render();
+				}
+			}
 		}
 
 	private:

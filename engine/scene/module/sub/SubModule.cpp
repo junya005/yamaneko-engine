@@ -22,6 +22,11 @@ namespace yamaneko_engine {
 		if (!is_active_) return;
 		OnUpdate(delta_time);
 	}
+
+	void SubModule::Render() {
+		if (!is_active_) return;
+		OnRender();
+	}
 	
 	GameObject* SubModule::GetGameObject() const { return parent_ ? parent_->GetGameObject() : nullptr; }
 
