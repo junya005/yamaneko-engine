@@ -28,6 +28,16 @@ namespace yamaneko_engine {
 		}
 	}
 
+	void Module::Render() {
+		if (!is_active_) return;
+		OnRender();
+		for (auto& sub_module : sub_modules_) {
+			if (sub_module) {
+				sub_module->Render();
+			}
+		}
+	}
+
 	GameObject* Module::GetGameObject() const { return owner_; }
 	Transform& Module::GetTransform() const { return owner_->transform; }
 	RHIShader* Module::GetShader() const { return owner_->shader; }

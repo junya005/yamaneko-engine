@@ -24,6 +24,12 @@ namespace yamaneko_engine {
 	using Matrix4 = glm::mat4;
 
 	namespace Math {
+		constexpr float PI = 3.14159265358979323846f;
+
+		inline float Sin(float angle) { return glm::sin(angle); }
+		inline float Cos(float angle) { return glm::cos(angle); }
+		inline float Tan(float angle) { return glm::tan(angle); }
+
 		inline float Radians(float degrees) { return glm::radians(degrees); }
 
 		inline Matrix4 Translate(const Matrix4& matrix, const Vector3& vector) { return glm::translate(matrix, vector); }
@@ -34,5 +40,6 @@ namespace yamaneko_engine {
 		inline Matrix4 Perspective(float fov, float aspect, float near, float far) { return glm::perspective(fov, aspect, near, far); }
 
 		inline float Dot(Vector3 a, Vector3 b) { return glm::dot(a, b); }
+		inline Vector3 Normalize(Vector3 v) { return glm::normalize(v); }
 	}
 }
