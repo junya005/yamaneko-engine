@@ -50,7 +50,7 @@
 	main/Application.h main/Application.cpp
 	main/EntryPoint.h
 	Engine.h
-)
+ "scene/PrimitiveObject.h" "scene/module/MeshRenderModule.h")
 
 target_include_directories(yamaneko_engine PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
