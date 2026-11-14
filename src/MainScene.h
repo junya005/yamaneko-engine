@@ -19,7 +19,7 @@ using namespace yamaneko_engine;
 
 class MainScene : public Scene {
 public:
-	MainScene() {
+	MainScene() : Scene("MainScene") {
 		RHIDevice* device = RHI::GetDevice();
 		shader_ = device->CreateShader(
 			"assets/shader/simple_vertex_shader.glsl", 
