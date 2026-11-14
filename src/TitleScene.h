@@ -16,21 +16,22 @@
 #include "../engine/renderer/3d/PrimitiveMesh.h"
 #include "../engine/scene/SceneManager.h"
 #include "MainScene.h"
+#include "../engine/core/debug/Log.h"
 
 using namespace yamaneko_engine;
 
 class TitleScene : public Scene {
 public:
 	TitleScene() : Scene("TitleScene") {
-
+		
 	}
 	
 	void OnEnter() override {
-	
+
 	}
 
 	void OnExit() override {
-	
+
 	}
 
 	void OnUpdate(float deltaTime) override {
@@ -58,8 +59,4 @@ public:
 		}
 		ImGui::End();
 	}
-
-private:
-	RHIShader* shader_;
-
 };
