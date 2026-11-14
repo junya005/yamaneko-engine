@@ -20,7 +20,7 @@ namespace yamaneko_engine::Log {
 
 		[[nondiscard]]
 		bool ShouldLog(LogLevel level) {
-			return level < minimum_level_;
+			return level >= minimum_level_;
 		}
 
 		[[nondiscard]]
