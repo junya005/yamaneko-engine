@@ -2,4 +2,5 @@
 	"GameApp.h" 
 	"MainScene.h"
 	"main.cpp"
+	"TitleScene.h"
 )
