@@ -26,6 +26,7 @@ namespace yamaneko_engine {
 		virtual ~Module() = default;
 		void Initialize();
 		void Update(float delta_time);
+		void Render();
 
 		void SetOwner(GameObject* owner) { owner_ = owner; }
 
@@ -46,6 +47,7 @@ namespace yamaneko_engine {
 	protected:
 		virtual void OnInitialize() {};
 		virtual void OnUpdate(float delta_time) {};
+		virtual void OnRender() {};
 
 	private:
 		bool is_active_ = true;

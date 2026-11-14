@@ -22,6 +22,7 @@ namespace yamaneko_engine {
 		virtual ~SubModule() = default;
 		void Initialize();
 		void Update(float delta_time);
+		void Render();
 
 		void SetParentModule(Module* parent) { parent_ = parent; }
 
@@ -36,6 +37,7 @@ namespace yamaneko_engine {
 	protected:
 		virtual void OnInitialize() {};
 		virtual void OnUpdate(float delta_time) {};
+		virtual void OnRender() {};
 
 	private:
 		Module* parent_ = nullptr;
