@@ -25,6 +25,10 @@ namespace yamaneko_engine::SceneManager {
 		current_scene = std::move(initial_scene);
 		next_scene.reset();
 		has_pending_transition = false;
+
+		if (current_scene) {
+			current_scene->Enter();
+		}
 	}
 
 	void Shutdown() {
