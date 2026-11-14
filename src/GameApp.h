@@ -4,6 +4,7 @@
 #include "../engine/main/EntryPoint.h"
 #include "../engine/scene/SceneManager.h"
 #include "MainScene.h"
+#include "TitleScene.h"
 
 using namespace yamaneko_engine;
 
@@ -12,7 +13,8 @@ public:
     GameApp() : Application() {}
 
     void OnInitialize(Config::EngineConfigData& config) override {
-		SceneManager::Initialize(std::make_unique<MainScene>());
+		SceneManager::Initialize(std::make_unique<TitleScene>());
+		SceneManager::AddScene(std::make_unique<MainScene>());
 	}
 
 	void OnUpdate(float deltaTime) override {
