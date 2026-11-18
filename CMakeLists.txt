@@ -1,20 +1,22 @@
-﻿cmake_minimum_required(VERSION 3.15)
+﻿cmake_minimum_required(VERSION 3.20)
 
+# ツールチェインファイルの指定
 set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 
+# プロジェクトの設定
 project(YamanekoEngineProject CXX)
+set(TARGET_NAME ${PROJECT_NAME})
+add_executable(${PROJECT_NAME})
 
-set(TARGET_NAME YamanekoEngineProject)
-
+# C++の環境設定
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
+# MSVCの場合、ソースコードの文字エンコーディングをUTF-8に設定
 if(MSVC)
   add_compile_options("/utf-8")
 endif()
-
-set(ASSETS_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/assets")
-set(ASSETS_DEST_DIR "$<TARGET_FILE_DIR:${TARGET_NAME}>/assets")
 
 # 依存パッケージの検索
 find_package(SDL2 REQUIRED)
@@ -24,12 +26,6 @@ find_package(glad REQUIRED)
 find_package(imgui REQUIRED)
 find_package(assimp REQUIRED)
 find_package(OpenGL REQUIRED)
-
-add_executable(${PROJECT_NAME})
-
-# ソースコードディレクトリの追加
-add_subdirectory(engine)
-add_subdirectory(src)
 
 # ターゲットにライブラリをリンク
 target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -43,6 +39,36 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenGL::GL
 )
 
+# ソースコードディレクトリの追加
+add_subdirectory(engine)
+add_subdirectory(src)
+
+# vcpkg でインストールされた全パッケージのライセンスを収集
+if(DEFINED VCPKG_INSTALLED_DIR AND DEFINED VCPKG_TARGET_TRIPLET)
+    set(VCPKG_SHARE_DIR "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/share")
+    file(GLOB VCPKG_COPYRIGHT_FILES "${VCPKG_SHARE_DIR}/*/copyright")
+
+    foreach(COPYRIGHT_FILE ${VCPKG_COPYRIGHT_FILES})
+        get_filename_component(PORT_DIR "${COPYRIGHT_FILE}" DIRECTORY)
+        get_filename_component(PORT_NAME "${PORT_DIR}" NAME)
+
+        if(PORT_NAME MATCHES "^vcpkg-")
+            continue()
+        endif()
+
+        add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${TARGET_NAME}>/licenses"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${COPYRIGHT_FILE}"
+                "$<TARGET_FILE_DIR:${TARGET_NAME}>/licenses/${PORT_NAME}-LICENSE.txt"
+        )
+    endforeach()
+endif()
+
+# アセットディレクトリのコピー設定
+set(ASSETS_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+set(ASSETS_DEST_DIR "$<TARGET_FILE_DIR:${TARGET_NAME}>/assets")
+
 # 注意: assetsディレクトリが存在しない場合、コピーは失敗します。事前にassetsディレクトリを作成してください。
 add_custom_command(
     TARGET ${TARGET_NAME} POST_BUILD
@@ -51,6 +77,3 @@ add_custom_command(
             "${ASSETS_DEST_DIR}"
 )
 
-if(MSVC)
-  target_compile_options(${PROJECT_NAME} PRIVATE "/utf-8")
-endif()
