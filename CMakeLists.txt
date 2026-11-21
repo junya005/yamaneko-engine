@@ -13,6 +13,9 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# ターゲットに直接 C++23 を要求
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
+
 # MSVCの場合、ソースコードの文字エンコーディングをUTF-8に設定
 if(MSVC)
   add_compile_options("/utf-8")
