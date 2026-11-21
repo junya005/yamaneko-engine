@@ -56,7 +56,7 @@ target_include_directories(yamaneko_engine PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(yamaneko_engine PUBLIC
+target_link_libraries(yamaneko_engine PRIVATE
     SDL2::SDL2
     SDL2_image::SDL2_image
     SDL2_ttf::SDL2_ttf

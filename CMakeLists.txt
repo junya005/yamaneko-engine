@@ -28,11 +28,12 @@ find_package(assimp REQUIRED)
 find_package(OpenGL REQUIRED)
 
 # ターゲットにライブラリをリンク
+# エンジンの機能不足を補うため、現状はアプリケーション側での直接リンクを許可しています。
+# 将来的には、エンジン側で必要なライブラリをまとめてリンクする形に変更し、アプリケーション側でのリンクを不要にする予定です。
 target_link_libraries(${PROJECT_NAME} PRIVATE
     yamaneko_engine
     SDL2::SDL2
     SDL2_image::SDL2_image
-    SDL2_ttf::SDL2_ttf
     glad::glad
     imgui::imgui
     assimp::assimp
