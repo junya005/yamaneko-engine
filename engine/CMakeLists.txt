@@ -52,6 +52,9 @@
 	Engine.h
 )
 
+# ライブラリ側も C++23 を明示
+target_compile_features(yamaneko_engine PUBLIC cxx_std_23)
+
 target_include_directories(yamaneko_engine PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
 )
