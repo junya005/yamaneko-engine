@@ -50,7 +50,7 @@
 	main/Application.h main/Application.cpp
 	main/EntryPoint.h
 	Engine.h
-)
+ "ai/bt/BehaviorTree.h")
 
 target_include_directories(yamaneko_engine PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
