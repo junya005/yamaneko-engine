@@ -1,0 +1,49 @@
+name: Refactoring proposal
+description: Propose internal design and maintainability improvements
+title: "[Refactor]: "
+labels:
+  - refactor
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the refactoring proposal. Please describe the goal and impact clearly.
+  - type: textarea
+    id: current
+    attributes:
+      label: Current problem
+      description: Technical debt, complexity, maintainability issues, etc.
+      placeholder: e.g. Renderer has too many responsibilities and broad change impact
+    validations:
+      required: true
+  - type: textarea
+    id: target
+    attributes:
+      label: Refactoring approach
+      description: How should code be reorganized, separated, or replaced?
+      placeholder: e.g. Extract render queue management into a dedicated class
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Impact scope
+      description: Affected modules, compatibility concerns, and risks
+      placeholder: e.g. engine/renderer only, no external API changes, regression risk in draw order
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition of done
+      description: Acceptance criteria and validation points
+      placeholder: e.g. Existing rendering tests pass with no FPS regression
+    validations:
+      required: true
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and did not find a duplicate proposal
+          required: true
