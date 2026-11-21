@@ -40,6 +40,21 @@ namespace yamaneko_engine {
 			return sub_module_ptr;
 		}
 
+		/// <summary>
+		/// サブモジュール一覧から、指定した型のサブモジュールを取得します。
+		/// </summary>
+		/// <typeparam name="T">取得したいサブモジュールの型です。</typeparam>
+		/// <returns>指定した型に一致する最初のサブモジュールへのポインタを返します。見つからない場合は nullptr を返します。</returns>
+		template<typename T>
+		T* GetSubModule() {
+			for (auto& sub_module : sub_modules_) {
+				if (T* casted_sub_module = dynamic_cast<T*>(sub_module.get())) {
+					return casted_sub_module;
+				}
+			}
+			return nullptr;
+		}
+
 		GameObject* GetGameObject() const;
 		Transform& GetTransform() const;
 		RHIShader* GetShader() const;

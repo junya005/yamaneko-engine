@@ -59,6 +59,21 @@ namespace yamaneko_engine {
 			return module_ptr;
 		}
 
+		/// <summary>
+		/// モジュールを取得します。指定された型のモジュールが存在しない場合は nullptr を返します。
+		/// </summary>
+		/// <typeparam name="T">取得したいモジュールの型</typeparam>
+		/// <returns>指定された型のモジュールへのポインタ、存在しない場合は nullptr</returns>
+		template<typename T>
+		T* GetModule() {
+			for (auto& module : modules_) {
+				if (T* casted_module = dynamic_cast<T*>(module.get())) {
+					return casted_module;
+				}
+			}
+			return nullptr;
+		}
+
 		void Update(float delta_time) {
 			for(auto& module : modules_) {
 				if (module) {
