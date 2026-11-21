@@ -50,7 +50,7 @@
 	main/Application.h main/Application.cpp
 	main/EntryPoint.h
 	Engine.h
-)
+ "ai/bt/BehaviorTree.h")
 
 # ライブラリ側も C++23 を明示
 target_compile_features(yamaneko_engine PUBLIC cxx_std_23)
