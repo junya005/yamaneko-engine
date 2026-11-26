@@ -8,8 +8,9 @@ REM Description:  Cleans local build artifacts and optionally vcpkg binary cache
 REM Usage:        CleanCache.bat
 REM ============================================================================
 
-setlocal enabledelayedexpansion
-cd /d "%~dp0"
+setlocal DisableDelayedExpansion
+cd /d "%~dp0" || exit /b 1
+setlocal EnableDelayedExpansion
 
 echo ========================================
 echo  YamanekoEngine Cache Cleaner
