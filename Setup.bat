@@ -44,7 +44,7 @@ if exist ".git" (
         exit /b 1
     )
 ) else (
-    echo [1/3] .git not found (ZIP download). Cloning vcpkg...
+    echo [1/3] .git not found ^(ZIP download^). Cloning vcpkg...
     if not exist "vcpkg\bootstrap-vcpkg.bat" (
         if exist "vcpkg" rmdir /s /q "vcpkg"
         git clone https://github.com/microsoft/vcpkg.git vcpkg
