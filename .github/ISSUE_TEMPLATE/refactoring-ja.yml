@@ -1,0 +1,50 @@
+name: リファクタリング提案
+description: 設計改善・内部品質向上の提案はこちら
+title: "[Refactor]: "
+labels:
+  - refactor
+body:
+  - type: markdown
+    attributes:
+      value: |
+        リファクタリング提案ありがとうございます。目的と影響範囲を具体的に記載してください。
+  - type: textarea
+    id: current
+    attributes:
+      label: 現状の課題
+      description: 技術的負債、複雑さ、保守性の問題など
+      placeholder: 例）Renderer周辺で責務が集中し、変更時の影響範囲が広い
+    validations:
+      required: true
+  - type: textarea
+    id: target
+    attributes:
+      label: 改善方針
+      description: どう整理・分離・置換するか
+      placeholder: 例）描画キュー管理を独立クラスに分離して責務を明確化する
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 影響範囲
+      description: 変更対象モジュール、互換性、リスク
+      placeholder: 例）engine/renderer 配下。外部API変更はなし。描画順に回帰リスクあり
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: 完了条件
+      description: 受け入れ条件・確認観点
+      placeholder: 例）既存描画テストが通ること、FPS劣化がないこと
+    validations:
+      required: true
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: 確認事項
+      options:
+        - label: 既存Issueに同様の提案がないことを確認しました
+          required: true
+
