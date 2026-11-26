@@ -9,7 +9,7 @@ REM Prerequisites: Git, CMake (3.20+), Visual Studio 2022
 REM Usage:        Setup.bat
 REM ============================================================================
 
-setlocal enabledelayedexpansion
+setlocal DisableDelayedExpansion
 cd /d "%~dp0"
 
 echo ========================================
