@@ -27,11 +27,21 @@ public:
 	}
 	
 	void OnEnter() override {
+		auto camera = std::make_unique<GameObject>("Camera", "");
+		camera->AddModule<Camera>();
+		AddGameObject(std::move(camera));
 
+		GameObject* cameraObject = GetAllGameObjectsByTag("Camera")[0];
+		if(cameraObject) {
+			Camera* cameraModule = cameraObject->GetModule<Camera>();
+			if(cameraModule) {
+				Log::Write(Log::LogLevel::Info, "TitleScene", "Camera module found.");
+			}
+		}
 	}
 
 	void OnExit() override {
-
+		
 	}
 
 	void OnUpdate(float deltaTime) override {
