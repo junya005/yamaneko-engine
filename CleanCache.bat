@@ -37,8 +37,7 @@ if exist "vcpkg_installed" rmdir /s /q "vcpkg_installed"
 
 @REM Confirm deletion of binary cache if applicable
 if "%DELETE_BIN_CACHE%"=="1" (
-    set "CACHE_DIR=%VCPKG_DEFAULT_BINARY_CACHE%"
-    if "!CACHE_DIR!"=="" set "CACHE_DIR=%LOCALAPPDATA%\YamanekoEngine\vcpkg_cache"
+    set "CACHE_DIR=!LOCALAPPDATA!\YamanekoEngine\vcpkg_cache"
     echo Deleting binary cache: !CACHE_DIR!
     if exist "!CACHE_DIR!" rmdir /s /q "!CACHE_DIR!"
 )
