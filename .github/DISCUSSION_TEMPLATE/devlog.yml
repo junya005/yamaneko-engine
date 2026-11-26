@@ -1,0 +1,85 @@
+title: "📅 Weekly Devlog: YYYY-MM-DD (Week XX)"
+labels: ["devlog", "weekly-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        週次開発ログのテンプレートです。進捗が少ない週は任意項目を空欄のまま投稿して構いません。
+
+  - type: textarea
+    id: media
+    attributes:
+      label: 🖼️ スクリーンショット / GIF動画（任意）
+      description: 今週のハイライトとなる画像や動画をドラッグ＆ドロップしてください。
+      placeholder: "画像をここにドラッグ＆ドロップ..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: highlights
+    attributes:
+      label: 🎯 今週のハイライト（3行まとめ）
+      description: 今週の最も重要な進捗や成果を簡潔に箇条書きします。
+      value: |
+        * 
+        * 
+        * 
+    validations:
+      required: true
+
+  - type: textarea
+    id: done
+    attributes:
+      label: ✅ 完了したこと (Done)
+      description: 実装した機能、修正したバグ、追加したADRなどを記載します（#123 のようにPR/Issue番号をリンクできます）。
+      value: |
+        * **[モジュール名]** 〇〇の実装を完了 (#)
+        * **[バグ修正]** △△の不具合を修正 (#)
+        * **[ドキュメント]** ADR-00X（〇〇の設計判断）を追加
+    validations:
+      required: true
+
+  - type: textarea
+    id: in-progress
+    attributes:
+      label: 🚧 進行中・試行錯誤したこと (In Progress / Notes)
+      description: まだ完了していないタスクや、ハマったポイント・検証結果のメモを残します。
+      value: |
+        * **〇〇の検証:** 
+          * 試したこと：
+          * 結果・所感：
+    validations:
+      required: false
+
+  - type: textarea
+    id: metrics
+    attributes:
+      label: 📊 パフォーマンス・メトリクス（任意）
+      description: フレーム時間やビルド時間など、計測している数値があれば記録します。
+      value: |
+        * **FPS / フレーム時間:** 
+        * **ビルド時間:** 
+        * **メモリ使用量:** 
+    validations:
+      required: false
+
+  - type: textarea
+    id: next
+    attributes:
+      label: ⏭️ 来週の予定 (Next)
+      description: 来週取り組む予定のタスクをリストアップします。
+      value: |
+        * [ ] 
+        * [ ] 
+        * [ ] 
+    validations:
+      required: true
+
+  - type: textarea
+    id: blockers
+    attributes:
+      label: 💡 ブロッカー・課題（任意）
+      description: 技術的な壁や、後回しにしている技術的負債があればメモしておきます。
+      placeholder: "特になければ空欄でOK"
+    validations:
+      required: false
