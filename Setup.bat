@@ -53,12 +53,12 @@ if exist ".git" (
             pause
             exit /b 1
         )
-        git -C vcpkg checkout %VCPKG_COMMIT%
-        if errorlevel 1 (
-            echo [ERROR] Failed to checkout vcpkg commit %VCPKG_COMMIT%.
-            pause
-            exit /b 1
-        )
+    )
+    git -C vcpkg checkout %VCPKG_COMMIT%
+    if errorlevel 1 (
+        echo [ERROR] Failed to checkout vcpkg commit %VCPKG_COMMIT%.
+        pause
+        exit /b 1
     )
 )
 
