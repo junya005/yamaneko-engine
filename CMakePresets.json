@@ -10,8 +10,24 @@
       "architecture": "x64",
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      },
+      "environment": {
+        "VCPKG_DEFAULT_BINARY_CACHE": "$env{LOCALAPPDATA}/YamanekoEngine/vcpkg_cache"
       }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "vcpkg-windows-debug",
+      "displayName": "Debug",
+      "configurePreset": "vcpkg-windows",
+      "configuration": "Debug"
+    },
+    {
+      "name": "vcpkg-windows-release",
+      "displayName": "Release",
+      "configurePreset": "vcpkg-windows",
+      "configuration": "Release"
     }
   ]
 }
-
