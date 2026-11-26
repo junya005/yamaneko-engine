@@ -21,7 +21,6 @@ build/
 out/
 
 # vcpkg
-vcpkg/
 vcpkg_installed/
 
 # third party libs
