@@ -31,13 +31,35 @@ if errorlevel 1 (
     exit /b 1
 )
 
-@REM Initialize submodules (shallow clone for speed)
-echo [1/3] Initializing submodules...
-git submodule update --init --depth 1
-if errorlevel 1 (
-    echo [ERROR] Failed to initialize submodules.
-    pause
-    exit /b 1
+@REM Target vcpkg commit hash (should match the submodule / builtin-baseline)
+set "VCPKG_COMMIT=93ad765c7b66ab9ce97469ec23a90b15c3a14ee5"
+
+@REM Initialize submodules or clone vcpkg if .git is not present
+if exist ".git" (
+    echo [1/3] Initializing submodules...
+    git submodule update --init
+    if errorlevel 1 (
+        echo [ERROR] Failed to initialize submodules.
+        pause
+        exit /b 1
+    )
+) else (
+    echo [1/3] .git not found (ZIP download). Cloning vcpkg...
+    if not exist "vcpkg\bootstrap-vcpkg.bat" (
+        if exist "vcpkg" rmdir /s /q "vcpkg"
+        git clone https://github.com/microsoft/vcpkg.git vcpkg
+        if errorlevel 1 (
+            echo [ERROR] Failed to clone vcpkg.
+            pause
+            exit /b 1
+        )
+        git -C vcpkg checkout %VCPKG_COMMIT%
+        if errorlevel 1 (
+            echo [ERROR] Failed to checkout vcpkg commit %VCPKG_COMMIT%.
+            pause
+            exit /b 1
+        )
+    )
 )
 
 @REM Bootstrap vcpkg
