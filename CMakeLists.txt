@@ -1,7 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.20)
-
-# ツールチェインファイルの指定
-set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+cmake_minimum_required(VERSION 3.20)
 
 # プロジェクトの設定
 project(YamanekoEngineProject CXX)
