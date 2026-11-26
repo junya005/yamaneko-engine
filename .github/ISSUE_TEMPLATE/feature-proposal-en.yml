@@ -1,0 +1,48 @@
+name: Feature proposal
+description: Propose a new feature or enhancement
+title: "[Feature]: "
+labels:
+  - feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the proposal. Please describe the value and implementation direction clearly.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What limitation or pain point does this address?
+      placeholder: e.g. Scene transitions have long loading times
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the feature or improvement.
+      placeholder: e.g. Add an async resource loader with loading UI
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: Expected impact
+      description: Benefits for users and/or maintainers
+      placeholder: e.g. Better UX with shorter perceived wait time
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives / Additional context
+      description: Mention alternatives or trade-offs if any.
+      placeholder: e.g. Configure preload targets via config file
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and did not find a duplicate proposal
+          required: true
+
