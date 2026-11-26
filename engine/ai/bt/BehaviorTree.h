@@ -1,4 +1,4 @@
-﻿/// <file>BehaviorTree.h</file>
+/// <file>BehaviorTree.h</file>
 /// <summary>
 /// BTに必要なクラス、構造体、列挙子等の宣言。
 /// </summary>
@@ -12,6 +12,7 @@
 
 #pragma once
 #include <vector>
+#include <deque>
 
 using namespace std;
 
@@ -25,11 +26,6 @@ namespace yamaneko_engine::ai {
 		kFailure,	// 失敗
 		kRunning,	// 実行中
 		kAborted	// 中断
-	};
-
-	struct BTContext{
-		void* agent; // エージェントのポインタ
-		float delta_time; // 前回のフレームからの経過時間
 	};
 
 	class BTBehavior {
@@ -51,7 +47,7 @@ namespace yamaneko_engine::ai {
 	private:
 		BTStatus status_;
 	public:
-		BTBehavior() : status_(BTStatus::kRunning) {}
+		BTBehavior() : status_(BTStatus::kInvalid) {}
 		virtual ~BTBehavior() = default;
 		
 		BTStatus Tick() {
@@ -122,7 +118,7 @@ namespace yamaneko_engine::ai {
 			children_.clear();
 		}
 	protected:
-		typedef vector<BTBehavior*> BTBehaviors;
+		typedef deque<BTBehavior*> BTBehaviors;
 		BTBehaviors children_;
 	};
 
@@ -136,7 +132,7 @@ namespace yamaneko_engine::ai {
 		virtual BTStatus Update() override {
 			// 子ノードが実行中であると示すまで、処理し続けます
 			while (true) {
-				BTStatus status = (*current_child_)->Tick(BTContext{});
+				BTStatus status = (*current_child_)->Tick();
 					
 				// 子プロセスが実行中、失敗のどちらでも同じ処理を行います
 				if (status != BTStatus::kSuccess) return status;
@@ -154,7 +150,7 @@ namespace yamaneko_engine::ai {
 	class BTFilter : public BTSequence {
 	public:
 		void AddCondition(BTBehavior* condition) {
-			children_.front(condition);
+			children_.push_front(condition);
 		}
 
 		void AddAction(BTBehavior* action) {
@@ -164,17 +160,12 @@ namespace yamaneko_engine::ai {
 
 	class BTSelector : public BTComposite {
 		virtual BTStatus Update() override {
-			while (true) {
-				BTStatus status = (*current_child_)->Tick(BTContext{});
+			for (auto child : children_) {
+				BTStatus status = child->Tick();
 				if (status != BTStatus::kFailure) return status;
-
-				++current_child_;
-				if (current_child_ == children_.end()) {
-					return BTStatus::kFailure;
-				}
 			}
 
-			return BTStatus::kInvalid;	// ここには到達しないはずです
+			return BTStatus::kFailure;	// ここには到達しないはずです
 		}
 	};
 
@@ -195,7 +186,7 @@ namespace yamaneko_engine::ai {
 		virtual BTStatus Update() override {
 			size_t i_success_count = 0, i_failure_count = 0;
 			for(auto it: children_) {
-				BTBehavior& behavior = **it;
+				BTBehavior& behavior = *it;
 				if (!behavior.IsTerminated()) behavior.Tick();
 
 				if (behavior.GetStatus() == BTStatus::kSuccess) {
@@ -221,8 +212,8 @@ namespace yamaneko_engine::ai {
 
 		virtual void OnInitialize() override {
 			for(auto it: children_) {
-				BTBehavior& behavior = **it;
-				if(behavior.IsRunning) behavior.Abort();
+				BTBehavior& behavior = *it;
+				if(behavior.IsRunning()) behavior.Abort();
 			}
 		}
 	};
@@ -230,23 +221,11 @@ namespace yamaneko_engine::ai {
 	struct BTMonitor : public BTParallel {
 	public:
 		void AddCondition(BTBehavior* condition) {
-			children_.front(condition);
+			children_.push_front(condition);
 		}
 
 		void AddAction(BTBehavior* action) {
 			children_.push_back(action);
-		}
-	}
-
-	class BTActiveSelector : public BTSelector {
-		virtual BTStatus Update() override {
-			BTBehaviors::iterator prev = current_child_;
-			BTSelector::OnInitialize();
-			BTStatus result = BTSelector::Update();
-			if(prev != current_child_.end() && prev != current_child_) {
-				(*prev)->Abort();
-			}
-			return result;
 		}
 	};
 }

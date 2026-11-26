@@ -2,7 +2,7 @@ find_package(GTest CONFIG REQUIRED)
 
 # テスト対象のファイルをここに列挙してください
 add_executable(yamaneko_tests
-    BehaviorTreeTest.cpp
+    ai/BehaviorTreeTest.cpp
 )
 
 target_link_libraries(yamaneko_tests PRIVATE
