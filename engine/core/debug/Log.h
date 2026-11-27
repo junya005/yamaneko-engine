@@ -1,4 +1,4 @@
-﻿/// <file>Log.h</file>
+/// <file>Log.h</file>
 /// <summary>
 /// ログに関する列挙子と構造体、関数の宣言と定義。
 /// </summary>
@@ -20,6 +20,32 @@
 #include <string_view>
 #include <utility>
 #include <vector>
+
+// ログ出力を簡易的に行えるマクロの定義
+#define LOG_TRACE(category, message) yamaneko_engine::Log::Write( \
+			yamaneko_engine::Log::LogLevel::Trace, \
+			category, \
+			message + std::string(" [") + __FILE__ + ":" + std::to_string(__LINE__) + "]")
+
+#define LOG_DEBUG(category, message) yamaneko_engine::Log::Write( \
+			yamaneko_engine::Log::LogLevel::Debug, \
+			category, \
+			message + std::string(" [") + __FILE__ + ":" + std::to_string(__LINE__) + "]")
+
+#define LOG_INFO(category, message) yamaneko_engine::Log::Write( \
+			yamaneko_engine::Log::LogLevel::Info, \
+			category, \
+			message + std::string(" [") + __FILE__ + ":" + std::to_string(__LINE__) + "]")
+
+#define LOG_WARNING(category, message) yamaneko_engine::Log::Write( \
+			yamaneko_engine::Log::LogLevel::Warning, \
+			category, \
+			message + std::string(" [") + __FILE__ + ":" + std::to_string(__LINE__) + "]")
+
+#define LOG_ERROR(category, message) yamaneko_engine::Log::Write( \
+			yamaneko_engine::Log::LogLevel::Error, \
+			category, \
+			message + std::string(" [") + __FILE__ + ":" + std::to_string(__LINE__) + "]")
 
 namespace yamaneko_engine::Log {
 	/// <summary>

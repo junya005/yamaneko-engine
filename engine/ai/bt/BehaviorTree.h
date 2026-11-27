@@ -9,23 +9,29 @@
 /// https://github.com/junya005/yamaneko-engine
 /// </remarks>
 
-
 #pragma once
 #include <vector>
 #include <deque>
+#include "BTBlackBoard.h"
 
 using namespace std;
 
 namespace yamaneko_engine::ai {
 	/// <summary>
-/// BTのノードの状態を表す列挙子。
-/// </summary>
+	/// BTのノードの状態を表す列挙子。
+	/// </summary>
 	enum class BTStatus {
 		kInvalid,	// 無効
 		kSuccess,	// 成功
 		kFailure,	// 失敗
 		kRunning,	// 実行中
 		kAborted	// 中断
+	};
+
+	struct BTContext{
+	public:
+		BTBlackBoard* blackboard;
+		float delta_time;
 	};
 
 	class BTBehavior {
@@ -38,7 +44,7 @@ namespace yamaneko_engine::ai {
 		/// <summary>
 		/// 動作ツリーが実行されるたびに呼び出される更新処理です。実行ステータスによって終了されたことが通知するまで続きます。
 		/// </summary>
-		virtual BTStatus Update() = 0;
+		virtual BTStatus Update(BTContext& context) = 0;
 
 		/// <summary>
 		/// 前回の更新処理が終了したことが通知されると一度だけ呼び出される終了処理です。
@@ -50,14 +56,14 @@ namespace yamaneko_engine::ai {
 		BTBehavior() : status_(BTStatus::kInvalid) {}
 		virtual ~BTBehavior() = default;
 		
-		BTStatus Tick() {
+		BTStatus Tick(BTContext& context) {
 			// 初期化処理
 			if (status_ != BTStatus::kRunning) { 
 				OnInitialize(); 
 			}
 
 			// 更新処理
-			status_ = Update();
+			status_ = Update(context);
 
 			// 終了処理
 			if (status_ != BTStatus::kRunning) { 
@@ -72,6 +78,12 @@ namespace yamaneko_engine::ai {
 				OnTerminate(BTStatus::kAborted);
 				status_ = BTStatus::kAborted;
 			}
+		}
+
+		void Reset() 
+		{
+			if (IsRunning()) Abort();
+			status_ = BTStatus::kInvalid;
 		}
 
 		bool IsTerminated() const { return status_ == BTStatus::kFailure || 
@@ -129,10 +141,12 @@ namespace yamaneko_engine::ai {
 			current_child_ = children_.begin();
 		}
 
-		virtual BTStatus Update() override {
+		virtual BTStatus Update(BTContext& context) override {
+			if (children_.empty()) return BTStatus::kSuccess;
+
 			// 子ノードが実行中であると示すまで、処理し続けます
 			while (true) {
-				BTStatus status = (*current_child_)->Tick();
+				BTStatus status = (*current_child_)->Tick(context);
 					
 				// 子プロセスが実行中、失敗のどちらでも同じ処理を行います
 				if (status != BTStatus::kSuccess) return status;
@@ -149,6 +163,8 @@ namespace yamaneko_engine::ai {
 
 	class BTFilter : public BTSequence {
 	public:
+		BTFilter() = default;
+
 		void AddCondition(BTBehavior* condition) {
 			children_.push_front(condition);
 		}
@@ -159,13 +175,25 @@ namespace yamaneko_engine::ai {
 	};
 
 	class BTSelector : public BTComposite {
-		virtual BTStatus Update() override {
-			for (auto child : children_) {
-				BTStatus status = child->Tick();
-				if (status != BTStatus::kFailure) return status;
-			}
+	protected:
+		BTBehaviors::iterator current_child_;
 
-			return BTStatus::kFailure;	// ここには到達しないはずです
+		virtual void OnInitialize() override {
+			current_child_ = children_.begin();
+		}
+
+		virtual BTStatus Update(BTContext& context) override {
+			if (children_.empty()) return BTStatus::kFailure;
+
+			while (true) {
+				BTStatus status = (*current_child_)->Tick(context);
+				if (status != BTStatus::kFailure) return status;
+
+				++current_child_;
+				if(current_child_ == children_.end()) {
+					return BTStatus::kFailure;
+				}
+			}
 		}
 	};
 
@@ -183,12 +211,19 @@ namespace yamaneko_engine::ai {
 		Policy success_policy_;
 		Policy failure_policy_;
 
-		virtual BTStatus Update() override {
+	protected:
+		virtual void OnInitialize() override {
+			for(auto it: children_) {
+				BTBehavior& behavior = *it;
+				behavior.Reset();
+			}
+		}
+
+		virtual BTStatus Update(BTContext& context) override {
 			size_t i_success_count = 0, i_failure_count = 0;
 			for(auto it: children_) {
 				BTBehavior& behavior = *it;
-				if (!behavior.IsTerminated()) behavior.Tick();
-
+				if (!behavior.IsTerminated()) behavior.Tick(context);
 				if (behavior.GetStatus() == BTStatus::kSuccess) {
 					i_success_count++;
 					if (success_policy_ == RequireOne) 
@@ -210,7 +245,7 @@ namespace yamaneko_engine::ai {
 			return BTStatus::kRunning;
 		}
 
-		virtual void OnInitialize() override {
+		virtual void OnTerminate(BTStatus status) override {
 			for(auto it: children_) {
 				BTBehavior& behavior = *it;
 				if(behavior.IsRunning()) behavior.Abort();
@@ -220,6 +255,10 @@ namespace yamaneko_engine::ai {
 
 	struct BTMonitor : public BTParallel {
 	public:
+		BTMonitor(Policy success_policy, Policy failure_policy)
+			: BTParallel(success_policy, failure_policy) {
+		}
+
 		void AddCondition(BTBehavior* condition) {
 			children_.push_front(condition);
 		}

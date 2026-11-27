@@ -1,4 +1,4 @@
-﻿add_library(yamaneko_engine STATIC
+add_library(yamaneko_engine STATIC
 	# エンジンコア
 	core/config/Config.h core/config/Config.cpp
 	core/debug/Log.h core/debug/Log.cpp
@@ -50,7 +50,7 @@
 	main/Application.h main/Application.cpp
 	main/EntryPoint.h
 	Engine.h
- "ai/bt/BehaviorTree.h")
+ "ai/bt/BehaviorTree.h" "ai/bt/BTBlackBoard.h")
 
 # ライブラリ側も C++23 を明示
 target_compile_features(yamaneko_engine PUBLIC cxx_std_23)
