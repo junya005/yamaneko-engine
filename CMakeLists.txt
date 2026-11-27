@@ -77,3 +77,8 @@ add_custom_command(
             "${ASSETS_DEST_DIR}"
 )
 
+# テスト環境の有効化
+include(CTest)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
